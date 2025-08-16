@@ -1,0 +1,11 @@
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\bin\Debug\net8.0\Clinic.Route.Domain.deps.json
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\bin\Debug\net8.0\Clinic.Route.Domain.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\bin\Debug\net8.0\Clinic.Route.Domain.pdb
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\Clinic.Route.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\Clinic.Route.Domain.AssemblyInfoInputs.cache
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\Clinic.Route.Domain.AssemblyInfo.cs
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\Clinic.Route.Domain.csproj.CoreCompileInputs.cache
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\Clinic.Route.Domain.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\refint\Clinic.Route.Domain.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\Clinic.Route.Domain.pdb
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Domain\obj\Debug\net8.0\ref\Clinic.Route.Domain.dll

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "zJSV5Tm0gRwAWBnZovKrB3J8bP607vY3oT83bvo3DCA=",
+  "Source": "Clinic.Route.WebApi",
+  "BasePath": "_content/Clinic.Route.WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

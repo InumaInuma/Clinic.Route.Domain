@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Clinic.Route.WebApi.props" />
+</Project>
