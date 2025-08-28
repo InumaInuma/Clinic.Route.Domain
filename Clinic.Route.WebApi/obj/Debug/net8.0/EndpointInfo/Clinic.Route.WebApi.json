@@ -55,6 +55,59 @@
         }
       }
     },
+    "/api/Examenes/{NumDni}": {
+      "post": {
+        "tags": [
+          "Examenes"
+        ],
+        "parameters": [
+          {
+            "name": "NumDni",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Examenes/subscribe": {
+      "post": {
+        "tags": [
+          "Examenes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/WeatherForecast": {
       "get": {
         "tags": [
@@ -97,6 +150,28 @@
   },
   "components": {
     "schemas": {
+      "SubscribeRequest": {
+        "type": "object",
+        "properties": {
+          "codEmp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codSed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codTCl": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numOrd": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "WeatherForecast": {
         "type": "object",
         "properties": {

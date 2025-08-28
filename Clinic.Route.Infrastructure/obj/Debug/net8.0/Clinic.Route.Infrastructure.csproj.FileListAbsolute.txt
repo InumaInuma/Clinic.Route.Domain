@@ -12,6 +12,7 @@ D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\ob
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\obj\Debug\net8.0\Clinic.Route.Infrastructure.AssemblyInfoInputs.cache
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\obj\Debug\net8.0\Clinic.Route.Infrastructure.AssemblyInfo.cs
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\obj\Debug\net8.0\Clinic.Route.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\obj\Debug\net8.0\Clinic.Route.Infrastructure.sourcelink.json
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\obj\Debug\net8.0\Clinic.R.0CA4657F.Up2Date
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\obj\Debug\net8.0\Clinic.Route.Infrastructure.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.Infrastructure\obj\Debug\net8.0\refint\Clinic.Route.Infrastructure.dll

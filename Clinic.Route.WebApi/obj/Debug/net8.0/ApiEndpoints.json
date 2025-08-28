@@ -31,6 +31,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Clinic.Route.WebApi.Controllers.ExamenesController",
+    "Method": "LoginDni",
+    "RelativePath": "api/Examenes/{NumDni}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "NumDni",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Clinic.Route.WebApi.Controllers.ExamenesController",
+    "Method": "Subscribe",
+    "RelativePath": "api/Examenes/subscribe",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "Clinic.Route.WebApi.Controllers.SubscribeRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Clinic.Route.WebApi.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

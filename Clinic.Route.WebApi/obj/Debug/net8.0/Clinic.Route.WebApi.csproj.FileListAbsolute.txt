@@ -22,7 +22,10 @@ D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.Identity.Client.dll
@@ -35,6 +38,7 @@ D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.OpenApi.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -44,6 +48,7 @@ D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\System.Memory.Data.dll
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\bin\Debug\net8.0\cs\Microsoft.Data.SqlClient.resources.dll
@@ -81,6 +86,7 @@ D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\net8.0\Clinic.Route.WebApi.csproj.CoreCompileInputs.cache
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\net8.0\Clinic.Route.WebApi.MvcApplicationPartsAssemblyInfo.cs
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\net8.0\Clinic.Route.WebApi.MvcApplicationPartsAssemblyInfo.cache
+D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\net8.0\Clinic.Route.WebApi.sourcelink.json
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\net8.0\scopedcss\bundle\Clinic.Route.WebApi.styles.css
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\net8.0\staticwebassets.build.json
 D:\Desktop\Desarrollo Medcrop\Clinic.Route.Domain\Clinic.Route.WebApi\obj\Debug\net8.0\staticwebassets.development.json

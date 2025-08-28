@@ -16,6 +16,7 @@ namespace Clinic.Route.Infrastructure.InjectionProgram
         {
             // Repositorios
             services.AddScoped<ISiglaRepository, SiglaRepository>();
+            services.AddScoped<IExamenRepository, ExamenRepository>();
             services.AddScoped<GetExamenesPacienteQuery>();
             return services;
         }

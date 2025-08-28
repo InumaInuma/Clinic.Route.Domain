@@ -1,4 +1,5 @@
 ﻿
+using Clinic.Route.Application.Service;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +17,7 @@ namespace Clinic.Route.Application.InjectionProgram
         {
             // Registra todos los handlers automáticamente usando MediatR 12
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddScoped<IExamenService, ExamenService>();
             return services;
         }
     }
