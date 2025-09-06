@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Clinic.Route.Contracts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2e08038c352a6401623273f016405c78099e822")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af31d73c32be91fdda5709fa8cc34cfbd1e36dfb")]
 [assembly: System.Reflection.AssemblyProductAttribute("Clinic.Route.Contracts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Clinic.Route.Contracts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

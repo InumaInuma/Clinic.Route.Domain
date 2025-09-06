@@ -54,7 +54,7 @@ namespace Clinic.Route.Infrastructure.Repositories
 
 
                 var result = await connection.QueryAsync<ExamenPaciente>(
-                    "SP_LISTAR_EXAMENES_PACIENTES_PROCESOS",
+                    "SP_LISTAR_EXAMENES_PACIENTES_PROCESOSSSSS",
                     parametros,
                     commandType: CommandType.StoredProcedure
                 );
@@ -72,8 +72,9 @@ namespace Clinic.Route.Infrastructure.Repositories
                 throw;
             }
         }
+
         //procedimiento almacenado ahora devuelve un solo valor entero
-       public async Task<int> LoginPorDni (string NroDId)
+        public async Task<LoginResultDto> LoginPorDni (string NroDId)
         {
             try
             {
@@ -81,8 +82,9 @@ namespace Clinic.Route.Infrastructure.Repositories
                 var parametros = new DynamicParameters();
                 parametros.Add("@NroDni", NroDId, DbType.String);
 
-                // Usamos ExecuteScalarAsync para obtener un solo valor (el 0 o 1)
-                var result = await connection.ExecuteScalarAsync<int>(
+                // ✅ Usamos QueryFirstOrDefaultAsync<LoginResult> para obtener la primera fila
+                // y mapearla a nuestra nueva clase.// Usamos ExecuteScalarAsync para obtener un solo valor (el 0 o 1)
+                var result = await connection.QueryFirstOrDefaultAsync<LoginResultDto>(
                     "SP_LOGINPOR_DNI_AUDITORIA",
                     parametros,
                     commandType: CommandType.StoredProcedure
@@ -102,6 +104,7 @@ namespace Clinic.Route.Infrastructure.Repositories
                 throw;
             }
         }
+
         public async Task<IEnumerable<ExamenesDeProcesos>> ListarExamenesDeProcesosAsync(int codEmp, int codSed, int codTCl, int numOrd,int IdAmbi)
         {
 
@@ -136,7 +139,7 @@ namespace Clinic.Route.Infrastructure.Repositories
             }
         }
 
-        public void SubscribeExamenes(int codEmp, int codSed, int codTCl, int numOrd, Func<Task> onChangeResubscribe)
+        public async Task SubscribeExamenesAsync(int codEmp, int codSed, int codTCl, int numOrd, Func<Task> onChangeResubscribe)
         {
             if (!_sqlDependencyStarted)
             {
@@ -146,10 +149,10 @@ namespace Clinic.Route.Infrastructure.Repositories
             }
             var key = $"{codEmp}-{codSed}-{codTCl}-{numOrd}";
             //Suscribir(codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
-            Suscribir(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
+            await SuscribirAsync(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
         }
 
-        private void Suscribir(string key, int codEmp, int codSed, int codTCl, int numOrd, Func<Task> onChangeResubscribe)
+        private async Task SuscribirAsync(string key, int codEmp, int codSed, int codTCl, int numOrd, Func<Task> onChangeResubscribe)
         {
             try
             {
@@ -203,14 +206,14 @@ namespace Clinic.Route.Infrastructure.Repositories
                     {
                         // Pequeño delay para evitar loops si hay errores
                         await Task.Delay(400);
-                        Suscribir(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
+                        await SuscribirAsync(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
                     }
                 };
 
-                cn.Open();
+                await cn.OpenAsync();
 
                 // ⚠️ IMPORTANTE: NO usar using; guardar el reader para que la suscripción quede viva
-                var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                var reader = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection); // Usa el método asíncrono
 
                 _subs[key] = new ActiveSub
                 {
@@ -229,12 +232,105 @@ namespace Clinic.Route.Infrastructure.Repositories
                 _ = Task.Run(async () =>
                 {
                     await Task.Delay(1500);
-                    Suscribir(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
+                    await SuscribirAsync(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
                 });
             }
 
 
         }
 
+        public async Task SubscribeSubExamenesAsync(int codEmp, int codSed, int codTCl, int numOrd, Func<Task> onChangeResubscribe)
+        {
+            if (!_sqlDependencyStarted)
+            {
+                SqlDependency.Start(_cs);
+                _sqlDependencyStarted = true;
+                _logger.LogInformation("🚀 SqlDependency iniciado para subexámenes");
+            }
+
+            var key = $"sub_{codEmp}-{codSed}-{codTCl}-{numOrd}";
+
+            // Limpia la suscripción antigua si existe
+            if (_subs.TryRemove(key, out var old))
+            {
+                try { old.Reader?.Close(); } catch { }
+                try { old.Connection?.Close(); } catch { }
+                try { old.Reader?.Dispose(); } catch { }
+                try { old.Command?.Dispose(); } catch { }
+                try { old.Connection?.Dispose(); } catch { }
+            }
+
+            await SuscribirSubExamenesAsync(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
+        }
+
+        // src/Clinic.Route.Infrastructure/Repositories/ExamenRepository.cs
+        private async Task SuscribirSubExamenesAsync(string key, int codEmp, int codSed, int codTCl, int numOrd, Func<Task> onChangeResubscribe)
+        {
+            try
+            {
+                var cn = new SqlConnection(_cs);
+                var cmd = new SqlCommand(@"
+                      SELECT 
+                        CodEmp, 
+                        CodSed, 
+                        CodTCl, 
+                        NumOrd, 
+                        CodSer, 
+                        IdAmbiente, 
+                        Accion
+                      FROM dbo.NotificacionSubExamen
+                        WHERE CodEmp = @CodEmp
+                          AND CodSed = @CodSed
+                          AND CodTCl = @CodTCl
+                          AND NumOrd = @NumOrd", cn);
+                      
+                cmd.Parameters.Add("@CodEmp", SqlDbType.Int).Value = codEmp;
+                cmd.Parameters.Add("@CodSed", SqlDbType.Int).Value = codSed;
+                cmd.Parameters.Add("@CodTCl", SqlDbType.Int).Value = codTCl;
+                cmd.Parameters.Add("@NumOrd", SqlDbType.Int).Value = numOrd;
+              
+
+                var dep = new SqlDependency(cmd);
+                dep.OnChange += async (_, args) =>
+                {
+                    _logger.LogInformation("🔔 Cambio de subexámenes detectado. Info: Type={Type} | Source={Source}", args.Type, args.Source);
+                    try
+                    {
+                        await onChangeResubscribe();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error en OnChange de subexámenes");
+                    }
+                    finally
+                    {
+                        await Task.Delay(400);
+                        await SuscribirSubExamenesAsync(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
+                    }
+                };
+
+                await cn.OpenAsync(); // Usa el método asíncrono
+
+                var reader = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection); // Usa el método asíncrono
+                _subs[key] = new ActiveSub
+                {
+                    Connection = cn,
+                    Command = cmd,
+                    Reader = reader,
+                    Dependency = dep
+                };
+                _logger.LogInformation("👂 Suscrito a subexámenes para clave {Key}", key);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creando suscripción de subexámenes {Key}", key);
+                // Intentar reintentar después de un breve tiempo
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(1500);
+                    await SuscribirSubExamenesAsync(key, codEmp, codSed, codTCl, numOrd, onChangeResubscribe);
+                });
+            }
+        }
     }
 }

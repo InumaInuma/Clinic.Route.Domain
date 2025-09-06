@@ -30,6 +30,8 @@ namespace Clinic.Route.Application.Service
         /// Inicializa la suscripción en tiempo real para notificar cambios en los exámenes.
         /// </summary>
         Task StartRealtimeAsync(int codEmp, int codSed, int codTCl, int numOrd); // <-- aquí cambia a Task
+
+       
     }
 
     /// <summary>
@@ -97,79 +99,18 @@ namespace Clinic.Route.Application.Service
             return listaFinal;
         }
 
-        /// <summary>
-        /// Llama al repositorio para obtener los exámenes del paciente.
-        /// </summary>
-
-        //public async Task<IEnumerable<ExamenPacienteDto>> GetExamenesAsync(int cEmp, int cSed, int cTcl, int nOrd)
-        //{
-        //  var list = await _repo.ListarExamenesPacienteAsync(cEmp, cSed, cTcl, nOrd);
-
-        //  return list.Select(c => new ExamenPacienteDto
-        //  {
-        //      CodPer = c.CodPer, // Mapea CodPer a CodPer
-        //      NomPer = c.NomPer ?? string.Empty, // Mapea NomPer a NomPer
-        //      NroDId = c.NroDId ?? string.Empty, // Mapea NroDId a NroDId
-        //      NroTlf = c.NroTlf ?? string.Empty, // Mapea NroTlf a NroTlf
-        //      NomCom = c.NomCom ?? string.Empty, // Mapea NomCom a NomCom
-        //      CodTCh = c.CodTCh, // Mapea CodTCh a CodTCh
-        //      CodSer = c.CodSer, // Mapea CodSer a CodSer
-        //      NomSer = c.NomSer ?? string.Empty, // Mapea NomSer a NomSer
-        //      estado = c.Estado // Mapea EstadoExamen a estado
-        //  }).ToList();
-        //}
-
-
-        //public async Task<IEnumerable<ExamenesDeProcesosDto>> GetExamenesDeProcesosAsync(int cEmp, int cSed, int cTcl, int nOrd,int iDam)
-        //{
-        //    var list = await _repo.ListarExamenesDeProcesosAsync(cEmp, cSed, cTcl, nOrd,iDam);
-
-        //    return list.Select(c => new ExamenesDeProcesosDto
-        //    { 
-        //        CodSer = c.CodSer, // Mapea CodSer a CodSer
-        //        NomSer = c.NomSer ?? string.Empty, // Mapea NomSer a NomSer
-        //        Nombre = c.Nombre ?? string.Empty, // Mapea NomPer a NomPer
-        //    }).ToList();
-        //}
-
+ 
 
         /// <summary>
         /// Inicia un proceso de escucha en la BD para detectar cambios en los exámenes
         /// y notificar automáticamente al front-end (ej. Angular) usando SignalR.
         /// </summary>
-        //public Task StartRealtimeAsync(int cEmp, int cSed, int cTcl, int nOrd)
-        //{
-        //    // Suscripción al repositorio: escucha cambios en los exámenes
-        //    _repo.SubscribeExamenes(cEmp, cSed, cTcl, nOrd, async () =>
-        //    {
-        //        // Al detectar un cambio, volvemos a consultar los exámenes actualizados
-        //        var data = await _repo.ListarExamenesPacienteAsync(cEmp, cSed, cTcl, nOrd);
-
-        //        data.Select(c => new ExamenPacienteDto
-        //        {
-        //            CodPer = c.CodPer, // Mapea CodPer a CodPer
-        //            NomPer = c.NomPer ?? string.Empty, // Mapea NomPer a NomPer
-        //            NroDId = c.NroDId ?? string.Empty, // Mapea NroDId a NroDId
-        //            NroTlf = c.NroTlf ?? string.Empty, // Mapea NroTlf a NroTlf
-        //            NomCom = c.NomCom ?? string.Empty, // Mapea NomCom a NomCom
-        //            CodTCh = c.CodTCh, // Mapea CodTCh a CodTCh
-        //            CodSer = c.CodSer, // Mapea CodSer a CodSer
-        //            NomSer = c.NomSer ?? string.Empty, // Mapea NomSer a NomSer
-        //            estado = c.Estado // Mapea EstadoExamen a estado
-        //        }).ToList();
-        //        // Construimos la clave única del grupo (empresa-sede-cliente-orden)
-        //        var group = GroupKeyBuilder.Build(cEmp, cSed, cTcl, nOrd);
-
-        //        // Notificamos a todos los clientes suscritos en tiempo real
-        //        await _notifier.NotifyExamenesActualizadosAsync(group, data);
-        //    });
-        //    return Task.CompletedTask;
-        //}
-
-        public Task StartRealtimeAsync(int cEmp, int cSed, int cTcl, int nOrd)
+        public async Task StartRealtimeAsync(int cEmp, int cSed, int cTcl, int nOrd)
         {
-            _repo.SubscribeExamenes(cEmp, cSed, cTcl, nOrd, async () =>
+            // 1. Iniciar la suscripción para los exámenes principales
+            await _repo.SubscribeExamenesAsync(cEmp, cSed, cTcl, nOrd, async () =>
             {
+                // Cuando hay un cambio en TRAYECTO_TICKET, el front-end debe volver a cargar TODO.
                 // Al detectar un cambio, volvemos a obtener la lista completa y anidada.
                 var data = await GetExamenesAsync(cEmp, cSed, cTcl, nOrd);
 
@@ -178,8 +119,50 @@ namespace Clinic.Route.Application.Service
                 // Notificamos a todos los clientes del grupo con la nueva estructura
                 await _notifier.NotifyExamenesActualizadosAsync(group, data);
             });
-            return Task.CompletedTask;
+
+
+            // 2. Suscribirse a cambios en los SUB-EXÁMENES
+            // No podemos depender de ListarExamenesPacienteAsync, porque puede estar vacío al inicio.
+            // En su lugar, nos suscribimos a los subexámenes cuando el trigger de OrdenxServicio se activa.
+            // Esto se logra con una suscripción 'genérica' que recarga todo al detectar un cambio.
+            // La clave es que el trigger de NotificacionSubExamen es el que envía la notificación.
+
+            // 🚨 Nueva lógica: Nos suscribimos de forma genérica a los cambios de subexámenes.
+            // Esta suscripción también recargará los datos si se produce un cambio en OrdenxServicio.
+            // La clave para este tipo de suscripción debe ser única, ya que no tiene el IdAmbi.
+
+         
+            await _repo.SubscribeSubExamenesAsync(cEmp, cSed, cTcl, nOrd, async () =>
+            {
+                // Al detectar un cambio en OrdenxServicio, el front-end debe volver a cargar TODO.
+                var data = await GetExamenesAsync(cEmp, cSed, cTcl, nOrd);
+                var group = GroupKeyBuilder.Build(cEmp, cSed, cTcl, nOrd);
+                await _notifier.NotifyExamenesActualizadosAsync(group, data);
+            });
+
+            //----------------------------------------------------------------------------------------------
+            //var examenesPrincipales = await _repo.ListarExamenesPacienteAsync(cEmp, cSed, cTcl, nOrd);
+
+            //// 3. Iterar y suscribir a los subexámenes de cada examen principal
+            //// Usamos Task.WhenAll para lanzar todas las suscripciones en paralelo
+            //var tareasDeSuscripcion = new List<Task>();
+
+            //foreach (var examenPrincipal in examenesPrincipales)
+            //{
+            //    // No necesitas Task.Run() si el método que llamas ya es asíncrono
+            //    var tarea = _repo.SubscribeSubExamenesAsync(cEmp, cSed, cTcl, nOrd, examenPrincipal.CodSer, async () =>
+            //    {
+            //        var data = await GetExamenesAsync(cEmp, cSed, cTcl, nOrd);
+            //        var group = GroupKeyBuilder.Build(cEmp, cSed, cTcl, nOrd);
+            //        await _notifier.NotifyExamenesActualizadosAsync(group, data);
+            //    });
+            //    tareasDeSuscripcion.Add(tarea);
+            //}
+            //// 4. Esperar a que todas las suscripciones de subexámenes terminen.
+            //await Task.WhenAll(tareasDeSuscripcion);
         }
+
+     
     }
 
 }

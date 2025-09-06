@@ -33,6 +33,8 @@ namespace Clinic.Route.WebApi.Controllers
             {
                 // 🔹 Inicia la suscripción en tiempo real
                 await _service.StartRealtimeAsync(codEmp, codSed, codTCl, numOrd);
+             
+                // Obtiene la lista de exámenes para la respuesta inicial del GET
                 var data = await _service.GetExamenesAsync(codEmp, codSed, codTCl, numOrd);
 
                 return Ok(data);
@@ -60,21 +62,29 @@ namespace Clinic.Route.WebApi.Controllers
                 var loginResult = await _repository.LoginPorDni(NumDni);
 
                 // 3. Devolver una respuesta HTTP apropiada según el resultado
-                if (loginResult == 1)
+                if (loginResult != null && loginResult.LoginResult == 1)
                 {
                     _logger.LogInformation("Inicie sesión exitosamente para DNI: {NumDni}", NumDni);
-                    return Ok(new { message = "Login exitoso. El usuario puede acceder.", status = 1 });
-                }
-                else if (loginResult == 0)
-                {
-                    _logger.LogWarning("Error al iniciar sesión DNI: {NumDni}. Exámenes ya completados.", NumDni);
-                    return Forbid("El usuario ya ha finalizado sus exámenes y no puede acceder.");
+                    // ✅ Cambio aquí: Devolver la información de la orden en el cuerpo de la respuesta OK
+                    return Ok(new
+                    {
+                        message = "Login exitoso. El usuario puede acceder.",
+                        status = 1,
+                        // Devolvemos los datos de la orden para que el front-end los pueda usar
+                        orden = new
+                        {
+                            CodEmp = loginResult.CodEmp,
+                            CodSed = loginResult.CodSed,
+                            CodTCl = loginResult.CodTCl,
+                            NumOrd = loginResult.NumOrd
+                        }
+                    });
                 }
                 else
                 {
-                    // Maneja casos donde el DNI podría no existir o el procedimiento devuelve un valor inesperado.
-                    _logger.LogWarning("Error al iniciar sesión DNI: {NumDni}. Usuario no encontrado.", NumDni);
-                    return NotFound("El número de DNI no se encontró.");
+                    _logger.LogWarning("Error al iniciar sesión DNI: {NumDni}. Usuario no encontrado o exámenes finalizados.", NumDni);
+                    // ✅ Devolver una respuesta consistente para el front-end
+                    return Unauthorized(new { message = "El usuario no se encontró o sus exámenes ya han sido completados.", status = 0 });
                 }
             }
             catch (Exception ex)
